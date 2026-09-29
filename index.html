@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment Options Library | CFE at American University</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f7fc; --surface: #ffffff; --surface-raised: #eef2fb;
+  --text-primary: #1a2847; --text-secondary: #3d5278; --text-muted: #6b82a0;
+  --accent: #2358CF; --accent-hover: #8AACF8; --accent-subtle: #eef4ff;
+  --border: #cdd8ef;
+  --shadow-sm: 0 1px 4px rgba(35,88,207,.07);
+  --shadow-md: 0 4px 18px rgba(35,88,207,.11);
+  --pill-low-bg: #d6f5d6; --pill-low-tx: #1a5c20;
+  --pill-med-bg: #fff4cc; --pill-med-tx: #7a5200;
+  --pill-hi-bg: #fde0e0; --pill-hi-tx: #8b1a1a;
+  --pill-forbid-bg: #e4e7ff; --pill-forbid-tx: #2a2f70;
+}
+[data-theme="dark"] {
+  --bg: #0d1b2e; --surface: #122040; --surface-raised: #192e50;
+  --text-primary: #dce6f5; --text-secondary: #9cb4d4; --text-muted: #5d7a9a;
+  --accent: #8AACF8; --accent-hover: #adc8ff; --accent-subtle: #192e50;
+  --border: #1e3560;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.25);
+  --shadow-md: 0 4px 18px rgba(0,0,0,.35);
+  --pill-low-bg: #163d1a; --pill-low-tx: #7dd87d;
+  --pill-med-bg: #3d3000; --pill-med-tx: #f0c040;
+  --pill-hi-bg: #3d1414; --pill-hi-tx: #f08080;
+  --pill-forbid-bg: #1e2360; --pill-forbid-tx: #b7c0ff;
+}
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family:'Montserrat',system-ui,sans-serif; background:var(--bg); color:var(--text-primary); line-height:1.65; transition:background .3s,color .3s; }
+.site-header { background:var(--surface); border-bottom:3px solid var(--accent); padding:.9rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; box-shadow:var(--shadow-md); }
+.header-left { display:flex; align-items:center; gap:1.25rem; }
+.logo-container { height:40px; display:flex; align-items:center; flex-shrink:0; }
+.logo-container svg { height:40px; width:auto; }
+.logo-light { display: block; }
+.logo-dark { display: none; }
+[data-theme="dark"] .logo-light { display: none; }
+[data-theme="dark"] .logo-dark { display: block; }
+.header-divider { width:1px; height:28px; background:var(--border); flex-shrink:0; }
+.header-title { font-size:.78rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+.header-sub { font-size:.68rem; font-weight:500; color:var(--text-muted); letter-spacing:.06em; }
+.theme-btn { background:var(--surface-raised); border:1.5px solid var(--border); border-radius:999px; padding:.45rem 1rem; font-family:'Montserrat',sans-serif; font-size:.73rem; font-weight:700; color:var(--text-secondary); letter-spacing:.05em; cursor:pointer; display:flex; align-items:center; gap:.45rem; }
+.theme-btn:hover { border-color:var(--accent); color:var(--accent); }
+main { max-width:1180px; margin:0 auto; padding:2.5rem 2rem 4rem; }
+.tool-intro { margin-bottom:1.75rem; max-width:760px; }
+.tool-intro h1 { font-size:1.9rem; font-weight:900; color:var(--accent); letter-spacing:-.03em; line-height:1.15; margin-bottom:.5rem; }
+.tool-intro p { font-size:.88rem; font-weight:400; color:var(--text-secondary); line-height:1.75; }
+/* ── FILTER BAR ── */
+.filter-bar { display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:2rem; position:sticky; top:66px; z-index:150; background:var(--bg); padding:.75rem 0; }
+.filter-btn { background:var(--surface); border:1.5px solid var(--border); border-radius:999px; padding:.55rem 1.15rem; font-family:'Montserrat',sans-serif; font-size:.76rem; font-weight:700; color:var(--text-secondary); cursor:pointer; transition:border-color .2s,background .2s,color .2s; letter-spacing:.02em; }
+.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.filter-count { font-size:.86rem; color:var(--text-muted); margin-bottom:1.25rem; font-weight:500; }
+/* ── ROLE SECTION HEADERS ── */
+.role-section { margin-bottom:2.75rem; }
+.role-section-head { display:flex; align-items:baseline; gap:.75rem; margin-bottom:.4rem; padding-bottom:.6rem; border-bottom:2px solid var(--border); }
+.role-section-num { font-size:.65rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); }
+.role-section-name { font-size:1.25rem; font-weight:800; color:var(--accent); }
+.role-section-desc { font-size:.82rem; color:var(--text-secondary); margin-bottom:1.25rem; max-width:740px; line-height:1.7; }
+/* ── CARDS ── */
+.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.4rem; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:.7rem; transition:box-shadow .2s; }
+.card:hover { box-shadow:var(--shadow-md); }
+.card-chips { display:flex; flex-wrap:wrap; gap:.4rem; }
+.chip { font-size:.63rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.2rem .6rem; border-radius:5px; }
+.chip.role { background:var(--accent-subtle); color:var(--accent); border:1px solid var(--border); }
+.chip.risk-low { background:var(--pill-low-bg); color:var(--pill-low-tx); }
+.chip.risk-medium { background:var(--pill-med-bg); color:var(--pill-med-tx); }
+.chip.risk-high { background:var(--pill-hi-bg); color:var(--pill-hi-tx); }
+.chip.forbidden-live { background:var(--pill-forbid-bg); color:var(--pill-forbid-tx); }
+.card-title { font-size:1rem; font-weight:700; color:var(--text-primary); line-height:1.3; }
+.card-desc { font-size:.82rem; color:var(--text-secondary); line-height:1.7; }
+.card-note { font-size:.78rem; color:var(--text-secondary); background:var(--accent-subtle); border:1px solid var(--border); border-radius:8px; padding:.8rem .95rem; line-height:1.65; }
+.card-note-label { font-size:.6rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:.3rem; }
+/* ── ADD-ONS ── */
+.addon-section { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.75rem; margin-top:1rem; margin-bottom:2rem; }
+.addon-section h2 { font-size:1.1rem; font-weight:800; color:var(--accent); margin-bottom:.4rem; }
+.addon-intro { font-size:.82rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1.25rem; max-width:740px; }
+.addon-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.addon-card { background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.4rem; }
+.addon-tag { font-size:.6rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+.addon-title { font-size:.9rem; font-weight:700; color:var(--text-primary); }
+.addon-desc { font-size:.79rem; color:var(--text-secondary); line-height:1.65; }
+/* ── NEXT STEPS ── */
+.next-steps { background:var(--accent-subtle); border:1px solid var(--border); border-radius:12px; padding:1.6rem; margin-top:1.5rem; }
+.next-steps h3 { font-size:.63rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.5rem; }
+.next-steps p { font-size:.85rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1rem; }
+.btn { display:inline-flex; align-items:center; gap:.4rem; font-family:'Montserrat',sans-serif; font-size:.76rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; padding:.65rem 1.4rem; border-radius:8px; cursor:pointer; border:none; text-decoration:none; background:var(--accent); color:#fff; transition:background .2s,transform .15s; }
+.btn:hover { transform:translateY(-1px); }
+@media (max-width:800px){ .cards-grid,.addon-grid{grid-template-columns:1fr;} .filter-bar{position:static;} }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-left">
+    <a href="https://edspace.american.edu/cfe/" target="_blank" class="logo-container" style="text-decoration:none;">
+      <svg class="logo-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 556 173"><defs><style>.st0{fill:#03519f}.st1{fill:#2a2f70}.st2{fill:#df263d}</style></defs><g><path class="st1" d="M77.55,39.56h-3.34l-.67,1.52h-3.31l5.58-11.68h.15l5.58,11.68h-3.31l-.69-1.52ZM75.1,37.38h1.58c-.27-.67-.69-1.73-.78-2.15h-.03c-.09.42-.5,1.47-.78,2.15Z"/><path class="st1" d="M87.36,35.76v5.31h-3.03v-11.68h.08l5.47,4.74,5.46-4.74h.09v11.68h-3.05v-5.31l-2.5,2.13-2.52-2.13Z"/><path class="st1" d="M99.29,29.55h7.35v2.82h-4.16v1.54h3.57v2.64h-3.57v1.71h4.39v2.82h-7.58v-11.52Z"/><path class="st1" d="M115.8,41.08l-1.62-3.59h-.9v3.59h-3.11v-11.52h4.13c2.7,0,4.6,1.33,4.6,4.05,0,1.63-.73,2.74-1.94,3.35l2.13,4.13h-3.31ZM113.28,32.37v2.46h1.19c.64,0,1.22-.29,1.22-1.23s-.58-1.23-1.22-1.23h-1.19Z"/><path class="st1" d="M125.53,41.08h-3.19v-11.52h3.19v11.52Z"/><path class="st1" d="M134.71,29.31c1.4,0,2.36.34,3.12.75v3.04c-.59-.32-1.52-.74-2.81-.74-1.95,0-2.97,1.42-2.97,2.95s.99,2.95,2.8,2.95c1.39,0,2.41-.4,3.05-.74v3.07c-.76.42-2.03.72-3.35.72-3.29,0-5.7-2.66-5.7-6s2.41-6,5.85-6Z"/><path class="st1" d="M147.53,39.56h-3.34l-.67,1.52h-3.31l5.58-11.68h.15l5.58,11.68h-3.31l-.69-1.52ZM145.08,37.38h1.59c-.27-.67-.69-1.73-.78-2.15h-.03c-.09.42-.5,1.47-.78,2.15Z"/><path class="st1" d="M157.42,35.91v5.17h-3.11v-11.68h.15l6.28,5.33v-5.17h3.12v11.69h-.14l-6.31-5.33Z"/><path class="st1" d="M172.24,29.55h3.19v6.8c0,1.22.56,1.9,1.74,1.9s1.74-.69,1.74-1.9v-6.8h3.2v7.17c0,2.74-1.81,4.59-4.94,4.59s-4.92-1.86-4.92-4.59v-7.17Z"/><path class="st1" d="M189.01,35.91v5.17h-3.11v-11.68h.15l6.28,5.33v-5.17h3.12v11.69h-.14l-6.31-5.33Z"/><path class="st1" d="M202.53,41.08h-3.19v-11.52h3.19v11.52Z"/><path class="st1" d="M213.26,29.55h3.51l-5.73,11.69h-.15l-5.75-11.69h3.52l1.36,3.06c.38.85.78,1.79.93,2.38h.03c.15-.59.55-1.54.93-2.38l1.36-3.06Z"/><path class="st1" d="M219.39,29.55h7.35v2.82h-4.16v1.54h3.57v2.64h-3.57v1.71h4.39v2.82h-7.58v-11.52Z"/><path class="st1" d="M235.91,41.08l-1.62-3.59h-.9v3.59h-3.11v-11.52h4.13c2.7,0,4.6,1.33,4.6,4.05,0,1.63-.73,2.74-1.94,3.35l2.13,4.13h-3.31ZM233.39,32.37v2.46h1.19c.64,0,1.22-.29,1.22-1.23s-.58-1.23-1.22-1.23h-1.19Z"/><path class="st1" d="M250.14,37.81c0,2.19-1.55,3.51-4.42,3.51-1.23,0-2.5-.24-3.35-.62v-3.2c1.02.59,2.24.91,3.19.91s1.48-.18,1.48-.59c0-.48-.72-.7-1.89-1.18-1.77-.72-3.02-1.49-3.02-3.7s1.69-3.62,4.3-3.62c1.1,0,2.23.21,2.99.54v3.07c-.67-.46-1.69-.74-2.71-.74-.9,0-1.45.27-1.45.74,0,.42.67.7,1.78,1.18,1.77.77,3.11,1.55,3.11,3.7Z"/><path class="st1" d="M256.56,41.08h-3.19v-11.52h3.19v11.52Z"/><path class="st1" d="M268.45,29.55v2.82h-2.8v8.71h-3.2v-8.71h-2.8v-2.82h8.81Z"/><path class="st1" d="M274.48,41.08v-4.35l-4.01-7.17h3.63l1.98,3.99,1.98-3.99h3.63l-4.01,7.17v4.35h-3.2Z"/></g><g><path class="st0" d="M49.72,47.99c4.88,0,8.21,1.11,10.86,2.49v10.07c-2.07-1.06-5.3-2.44-9.75-2.44-6.78,0-10.33,4.72-10.33,9.75s3.44,9.75,9.75,9.75c4.82,0,8.37-1.32,10.6-2.44v10.17c-2.65,1.38-7.05,2.38-11.66,2.38-11.45,0-19.82-8.8-19.82-19.87s8.37-19.87,20.35-19.87Z"/><path class="st0" d="M89.84,72.11c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM77.07,67.87c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="st0" d="M120.84,86.94h-10.81v-14.94c0-1.64-.9-2.65-2.23-2.65-2.28,0-3.66,1.7-3.66,4.24v13.35h-10.81v-26.5h9.75l.32,2.38c.11.74-.05,1.22-.21,1.64h.11c1.22-2.49,4.77-4.82,8.21-4.82,5.41,0,9.33,3.39,9.33,10.76v16.53Z"/><path class="st0" d="M123.39,60.45h3.18v-7.95h10.49v7.95h6.09v8.27h-6.09v7.68c0,2.01,1.54,2.54,2.92,2.54,1.64,0,3.13-.58,4.03-1.01v8.64c-1.22.53-3.87,1.17-7.47,1.17-5.35,0-10.12-2.7-10.12-9.96v-9.06h-3.02v-8.27Z"/><path class="st0" d="M172.25,72.11c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM159.48,67.87c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="st0" d="M175.75,60.45h9.75l.42,3.02c1.59-1.96,4.45-3.82,7.47-3.82.9,0,1.75.11,1.75.11v10.55s-.79-.42-2.07-.42c-2.97,0-6.52,1.54-6.52,6.04v11.02h-10.81v-26.5Z"/><path class="st0" d="M209.46,60.45h3.44v-1.8c0-6.52,4.08-10.65,12.24-10.65,1.8,0,3.29.21,3.82.32v9.01c-.48-.16-1.38-.37-2.7-.37-2.12,0-3.5,1.01-3.5,3.02v.48h5.41v8.27h-4.88v18.23h-10.81v-18.23h-3.02v-8.27Z"/><path class="st0" d="M229.76,73.7c0-8.06,6.09-14.04,14.57-14.04s14.57,5.99,14.57,14.04-6.09,14.04-14.57,14.04-14.57-5.99-14.57-14.04ZM239.83,73.7c0,3.18,2.07,5.14,4.5,5.14s4.5-1.96,4.5-5.14-2.07-5.14-4.5-5.14-4.5,1.96-4.5,5.14Z"/><path class="st0" d="M262.35,60.45h9.75l.42,3.02c1.59-1.96,4.45-3.82,7.47-3.82.9,0,1.75.11,1.75.11v10.55s-.79-.42-2.07-.42c-2.97,0-6.52,1.54-6.52,6.04v11.02h-10.81v-26.5Z"/></g><g><path class="st2" d="M81.19,92.77h24.22v9.33h-13.14v5.67h11.08v9.06h-11.08v14.1h-11.08v-38.16Z"/><path class="st2" d="M107.69,105.27c1.48-.64,5.14-1.64,10.12-1.64,8.8,0,13.3,4.13,13.3,10.76v16.53h-9.7l-.21-1.75c-.11-.95.05-1.59.05-1.59h-.11c-1.06,2.38-3.44,4.13-7.31,4.13-4.19,0-8.43-2.38-8.43-8.21,0-6.52,6.89-9.65,14.94-8.48v-.05c0-1.8-1.59-2.49-4.45-2.49-3.02,0-6.25,1.01-8.21,2.28v-9.49ZM120.09,119.79c-3.39-.53-4.77.79-4.77,2.23,0,1.11.74,1.7,1.75,1.7,1.75,0,3.02-1.27,3.02-3.92Z"/><path class="st2" d="M149.98,122.39c2.76,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.94-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="st2" d="M159.47,104.43h10.81v14.94c0,1.64.9,2.65,2.23,2.65,2.28,0,3.66-1.7,3.66-4.24v-13.35h10.81v26.5h-9.75l-.32-2.38c-.11-.74.05-1.22.21-1.64h-.11c-1.22,2.49-4.77,4.82-8.21,4.82-5.41,0-9.33-3.39-9.33-10.76v-16.53Z"/><path class="st2" d="M208.07,130.71c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54,1.11,0,2.28-.42,2.97-.74v8.8Z"/><path class="st2" d="M207.7,104.43h3.18v-7.95h10.49v7.95h6.09v8.27h-6.09v7.68c0,2.01,1.54,2.54,2.92,2.54,1.64,0,3.13-.58,4.03-1.01v8.64c-1.22.53-3.87,1.17-7.47,1.17-5.35,0-10.12-2.7-10.12-9.96v-9.06h-3.02v-8.27Z"/><path class="st2" d="M230.6,132.99c.42.21,1.75.69,3.44.69,2.7,0,4.29-1.11,5.09-2.44l-10.7-26.82h11.71l2.49,8.85c.74,2.65,1.43,5.41,1.85,8.16h.11c.37-2.75,1.06-5.51,1.8-8.16l2.49-8.85h11.66l-10.12,27.29c-3.07,8.32-8.43,11.66-14.68,11.66-2.91,0-4.5-.42-5.14-.69v-9.7Z"/><path class="st0" d="M276.55,92.77h25.54v9.33h-14.47v5.09h12.4v8.74h-12.4v5.67h15.26v9.33h-26.34v-38.16Z"/><path class="st0" d="M321.76,104.43h12.24l-8.48,12.67,8.85,13.83h-11.71l-3.76-6.15-3.66,6.15h-11.82l8.58-12.77-8.48-13.73h11.98l3.02,6.57,3.23-6.57Z"/><path class="st0" d="M350.06,122.39c2.76,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.94-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="st0" d="M384.83,116.09c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM372.05,111.85c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="st0" d="M404.07,130.71c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54,1.11,0,2.28-.42,2.97-.74v8.8Z"/><path class="st0" d="M422.46,130.71c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54,1.11,0,2.28-.42,2.97-.74v8.8Z"/><path class="st0" d="M450.33,116.09c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM437.56,111.85c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="st0" d="M481.34,130.92h-10.81v-14.94c0-1.64-.9-2.65-2.23-2.65-2.28,0-3.66,1.7-3.66,4.24v13.35h-10.81v-26.5h9.75l.32,2.38c.11.74-.05,1.22-.21,1.64h.11c1.22-2.49,4.77-4.82,8.21-4.82,5.41,0,9.33,3.39,9.33,10.76v16.53Z"/><path class="st0" d="M500.74,122.39c2.76,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.94-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="st0" d="M535.5,116.09c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM522.73,111.85c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/></g><path class="st0" d="M59.75,120.39s3.13,4.44,8.89,2.6c0,0,5.86-1.37,5.55-7.93,0,0-3.82,2.33-6.88,3.42-3.24,1.16-7.57,1.9-7.57,1.9Z"/><path class="st0" d="M72.74,90.8l.3,1.25-1.01.79c-.22.17-5.48,4.25-11.49,6.56-6.2,2.39-13.4,2.88-13.71,2.9l-1.3.09-.6-1.15c-2.61-4.98-6.32-6.54-9.92-8.06-.87-.37-1.78-.75-2.65-1.17-5.45-2.66-9.66-7.42-12.16-13.78-1.89-4.81-2.76-10.59-2.32-15.45.85-9.43,6.13-17,15.7-22.51,2.02-1.16,4.6-2.14,7.07-2.7,7.29-1.62,17.84-1.78,26.66,6.7,2.51,2.41,5.18,5.39,7.79,12.74-1.38.15-2.69.46-3.92.91-2.27-6.21-4.44-8.65-6.64-10.76-7.55-7.26-16.68-7.1-23.02-5.68-2.06.46-4.29,1.3-5.94,2.26-8.49,4.89-12.98,11.23-13.72,19.4-.67,7.43,2.04,20.3,12.25,25.27.77.38,1.59.72,2.46,1.09,3.59,1.51,8,3.37,11.24,8.7,2.23-.24,7.1-.91,11.29-2.53,4.01-1.54,7.75-4.03,9.47-5.26-.16-.91-.42-2.29-.47-3.16,1.29.79,2.74,1.42,4.31,1.86.08.55.19,1.12.33,1.69Z"/><path class="st1" d="M73.89,97.26c-1.17,3.48-8.82,6.67-12.25,7.9-1.75.63-10.46,3.63-13.64,1.75-.49-.29-1.02-1.21-.31-2.3.95-1.44,4.8-.25,12.94-3.36h.01c8.18-2.99,10.31-6.42,11.98-5.95,1.25.35,1.45,1.4,1.27,1.95Z"/><path class="st1" d="M75.1,103.45c-.91,3.41-9.44,6.58-11.02,7.19h-.01c-1.61.57-10.14,3.72-13.04,1.73-.43-.29-.93-1.07-.29-2.03.86-1.27,4.61-.67,11.96-3.41h0s.01,0,.01,0h0c7.36-2.72,9.81-5.63,11.3-5.22,1.11.31,1.24,1.24,1.1,1.73Z"/><path class="st1" d="M76.43,109.43c-.74,3.34-8.53,6.24-9.97,6.8h-.01c-1.47.52-9.26,3.39-12,1.34-.4-.29-.89-1.08-.33-2.02.76-1.24,4.24-.53,10.95-3.03h0s.01,0,.01,0h0c6.72-2.49,8.9-5.29,10.29-4.85,1.04.34,1.18,1.26,1.07,1.75Z"/></svg>
+      <svg class="logo-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 556 173"><defs><style>.dm{fill:#fff}</style></defs><g><path class="dm" d="M79.38,38.11h-3.34l-.67,1.52h-3.31l5.58-11.68h.15l5.58,11.68h-3.31l-.69-1.52ZM76.92,35.94h1.58c-.27-.67-.69-1.73-.78-2.15h-.03c-.09.42-.5,1.47-.78,2.15Z"/><path class="dm" d="M89.19,34.32v5.31h-3.03v-11.68h.08l5.47,4.74,5.46-4.74h.09v11.68h-3.05v-5.31l-2.5,2.13-2.52-2.13Z"/><path class="dm" d="M101.11,28.11h7.35v2.82h-4.16v1.54h3.57v2.64h-3.57v1.71h4.39v2.82h-7.58v-11.52Z"/><path class="dm" d="M117.63,39.63l-1.62-3.59h-.9v3.59h-3.11v-11.52h4.13c2.7,0,4.6,1.33,4.6,4.05,0,1.63-.73,2.74-1.94,3.35l2.13,4.13h-3.31ZM115.11,30.93v2.46h1.19c.64,0,1.22-.29,1.22-1.23s-.58-1.23-1.22-1.23h-1.19Z"/><path class="dm" d="M127.36,39.63h-3.19v-11.52h3.19v11.52Z"/><path class="dm" d="M136.54,27.87c1.4,0,2.36.34,3.12.75v3.04c-.59-.32-1.52-.74-2.8-.74-1.95,0-2.97,1.42-2.97,2.95s.99,2.95,2.8,2.95c1.39,0,2.41-.4,3.05-.74v3.07c-.76.42-2.03.72-3.35.72-3.29,0-5.7-2.66-5.7-6s2.41-6,5.85-6Z"/><path class="dm" d="M149.36,38.11h-3.34l-.67,1.52h-3.31l5.58-11.68h.15l5.58,11.68h-3.31l-.69-1.52ZM146.91,35.94h1.59c-.27-.67-.69-1.73-.78-2.15h-.03c-.09.42-.5,1.47-.78,2.15Z"/><path class="dm" d="M159.24,34.46v5.17h-3.11v-11.68h.15l6.28,5.33v-5.17h3.12v11.69h-.14l-6.31-5.33Z"/><path class="dm" d="M174.07,28.11h3.19v6.8c0,1.22.56,1.9,1.74,1.9s1.74-.69,1.74-1.9v-6.8h3.2v7.17c0,2.74-1.81,4.59-4.94,4.59s-4.92-1.86-4.92-4.59v-7.17Z"/><path class="dm" d="M190.84,34.46v5.17h-3.11v-11.68h.15l6.28,5.33v-5.17h3.12v11.69h-.14l-6.31-5.33Z"/><path class="dm" d="M204.35,39.63h-3.19v-11.52h3.19v11.52Z"/><path class="dm" d="M215.09,28.11h3.51l-5.73,11.69h-.15l-5.75-11.69h3.52l1.36,3.06c.38.85.78,1.79.93,2.38h.03c.15-.59.55-1.54.93-2.38l1.36-3.06Z"/><path class="dm" d="M221.22,28.11h7.35v2.82h-4.16v1.54h3.57v2.64h-3.57v1.71h4.39v2.82h-7.58v-11.52Z"/><path class="dm" d="M237.73,39.63l-1.62-3.59h-.9v3.59h-3.11v-11.52h4.13c2.7,0,4.6,1.33,4.6,4.05,0,1.63-.73,2.74-1.94,3.35l2.13,4.13h-3.31ZM235.22,30.93v2.46h1.19c.64,0,1.22-.29,1.22-1.23s-.58-1.23-1.22-1.23h-1.19Z"/><path class="dm" d="M251.96,36.37c0,2.19-1.55,3.51-4.42,3.51-1.23,0-2.5-.24-3.35-.62v-3.2c1.02.59,2.24.91,3.19.91s1.48-.18,1.48-.59c0-.48-.72-.7-1.89-1.18-1.77-.72-3.02-1.49-3.02-3.7s1.69-3.62,4.3-3.62c1.1,0,2.23.21,2.99.54v3.07c-.67-.46-1.69-.74-2.71-.74-.9,0-1.45.27-1.45.74,0,.42.67.7,1.78,1.18,1.77.77,3.11,1.55,3.11,3.7Z"/><path class="dm" d="M258.38,39.63h-3.19v-11.52h3.19v11.52Z"/><path class="dm" d="M270.28,28.11v2.82h-2.8v8.71h-3.2v-8.71h-2.8v-2.82h8.81Z"/><path class="dm" d="M276.3,39.63v-4.35l-4.01-7.17h3.63l1.98,3.99,1.98-3.99h3.63l-4.01,7.17v4.35h-3.2Z"/></g><g><path class="dm" d="M51.55,46.55c4.88,0,8.21,1.11,10.86,2.49v10.07c-2.07-1.06-5.3-2.44-9.75-2.44-6.78,0-10.33,4.72-10.33,9.75s3.45,9.75,9.75,9.75c4.82,0,8.37-1.32,10.6-2.44v10.17c-2.65,1.38-7.05,2.38-11.66,2.38-11.45,0-19.82-8.8-19.82-19.87s8.37-19.87,20.35-19.87Z"/><path class="dm" d="M91.67,70.67c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.05-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM78.89,66.43c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="dm" d="M122.67,85.5h-10.81v-14.94c0-1.64-.9-2.65-2.23-2.65-2.28,0-3.66,1.7-3.66,4.24v13.35h-10.81v-26.5h9.75l.32,2.38c.11.74-.05,1.22-.21,1.64h.11c1.22-2.49,4.77-4.82,8.21-4.82,5.41,0,9.33,3.39,9.33,10.76v16.53Z"/><path class="dm" d="M125.22,59.01h3.18v-7.95h10.49v7.95h6.09v8.27h-6.09v7.68c0,2.01,1.54,2.54,2.92,2.54,1.64,0,3.13-.58,4.03-1.01v8.64c-1.22.53-3.87,1.17-7.47,1.17-5.35,0-10.12-2.7-10.12-9.96v-9.06h-3.02v-8.27Z"/><path class="dm" d="M174.08,70.67c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.05-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM161.31,66.43c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="dm" d="M177.58,59.01h9.75l.42,3.02c1.59-1.96,4.45-3.82,7.47-3.82.9,0,1.75.11,1.75.11v10.55s-.79-.42-2.07-.42c-2.97,0-6.52,1.54-6.52,6.04v11.02h-10.81v-26.5Z"/><path class="dm" d="M211.29,59.01h3.44v-1.8c0-6.52,4.08-10.65,12.24-10.65,1.8,0,3.29.21,3.82.32v9.01c-.48-.16-1.38-.37-2.7-.37-2.12,0-3.5,1.01-3.5,3.02v.48h5.41v8.27h-4.88v18.23h-10.81v-18.23h-3.02v-8.27Z"/><path class="dm" d="M231.59,72.26c0-8.06,6.09-14.04,14.57-14.04s14.57,5.99,14.57,14.04-6.09,14.04-14.57,14.04-14.57-5.99-14.57-14.04ZM241.66,72.26c0,3.18,2.07,5.14,4.5,5.14s4.5-1.96,4.5-5.14-2.07-5.14-4.5-5.14-4.5,1.96-4.5,5.14Z"/><path class="dm" d="M264.18,59.01h9.75l.42,3.02c1.59-1.96,4.45-3.82,7.47-3.82.9,0,1.75.11,1.75.11v10.55s-.79-.42-2.07-.42c-2.97,0-6.52,1.54-6.52,6.04v11.02h-10.81v-26.5Z"/></g><g><path class="dm" d="M83.02,91.33h24.22v9.33h-13.14v5.67h11.08v9.06h-11.08v14.1h-11.08v-38.16Z"/><path class="dm" d="M109.52,103.83c1.48-.64,5.14-1.64,10.12-1.64,8.8,0,13.3,4.13,13.3,10.76v16.53h-9.7l-.21-1.75c-.11-.95.05-1.59.05-1.59h-.11c-1.06,2.38-3.44,4.13-7.31,4.13-4.19,0-8.43-2.38-8.43-8.21,0-6.52,6.89-9.65,14.94-8.48v-.05c0-1.8-1.59-2.49-4.45-2.49-3.02,0-6.25,1.01-8.21,2.28v-9.49ZM121.92,118.35c-3.39-.53-4.77.79-4.77,2.23,0,1.11.74,1.7,1.75,1.7,1.75,0,3.02-1.27,3.02-3.92Z"/><path class="dm" d="M151.81,120.95c2.75,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.93-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="dm" d="M161.3,102.99h10.81v14.94c0,1.64.9,2.65,2.23,2.65,2.28,0,3.66-1.7,3.66-4.24v-13.35h10.81v26.5h-9.75l-.32-2.38c-.11-.74.05-1.22.21-1.64h-.11c-1.22,2.49-4.77,4.82-8.21,4.82-5.41,0-9.33-3.39-9.33-10.76v-16.53Z"/><path class="dm" d="M209.9,129.27c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54s2.28-.42,2.97-.74v8.8Z"/><path class="dm" d="M209.53,102.99h3.18v-7.95h10.49v7.95h6.09v8.27h-6.09v7.68c0,2.01,1.54,2.54,2.92,2.54,1.64,0,3.13-.58,4.03-1.01v8.64c-1.22.53-3.87,1.17-7.47,1.17-5.35,0-10.12-2.7-10.12-9.96v-9.06h-3.02v-8.27Z"/><path class="dm" d="M232.43,131.55c.42.21,1.75.69,3.44.69,2.7,0,4.29-1.11,5.09-2.44l-10.7-26.82h11.71l2.49,8.85c.74,2.65,1.43,5.41,1.85,8.16h.11c.37-2.75,1.06-5.51,1.8-8.16l2.49-8.85h11.66l-10.12,27.29c-3.07,8.32-8.43,11.66-14.68,11.66-2.91,0-4.5-.42-5.14-.69v-9.7Z"/><path class="dm" d="M278.38,91.33h25.54v9.33h-14.47v5.09h12.4v8.74h-12.4v5.67h15.26v9.33h-26.34v-38.16Z"/><path class="dm" d="M323.58,102.99h12.24l-8.48,12.67,8.85,13.83h-11.71l-3.76-6.15-3.66,6.15h-11.82l8.58-12.77-8.48-13.73h11.98l3.02,6.57,3.23-6.57Z"/><path class="dm" d="M351.89,120.95c2.75,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.93-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="dm" d="M386.65,114.64c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM373.88,110.4c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="dm" d="M405.89,129.27c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54s2.28-.42,2.97-.74v8.8Z"/><path class="dm" d="M424.28,129.27c-1.01.48-3.39,1.01-6.46,1.01-5.09,0-9.54-2.44-9.54-9.17v-29.78h10.81v27.34c0,2.07,1.17,2.54,2.23,2.54,1.11,0,2.28-.42,2.97-.74v8.8Z"/><path class="dm" d="M452.16,114.64c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM439.39,110.4c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/><path class="dm" d="M483.17,129.48h-10.81v-14.94c0-1.64-.9-2.65-2.23-2.65-2.28,0-3.66,1.7-3.66,4.24v13.35h-10.81v-26.5h9.75l.32,2.38c.11.74-.05,1.22-.21,1.64h.11c1.22-2.49,4.77-4.82,8.21-4.82,5.41,0,9.33,3.39,9.33,10.76v16.53Z"/><path class="dm" d="M502.56,120.95c2.76,0,5.67-1.64,6.09-2.07v9.59c-.53.26-3.5,1.8-7.95,1.8-8.74,0-14.36-5.99-14.36-14.04s5.62-14.04,14.36-14.04c4.45,0,7.26,1.48,7.79,1.75v9.64c-1.11-1.01-3.82-2.07-5.94-2.07-3.07,0-5.35,1.7-5.35,4.72s2.12,4.72,5.35,4.72Z"/><path class="dm" d="M537.33,114.64c0,1.7-.21,3.29-.32,3.76h-15.1c.48,2.07,2.49,2.92,5.51,2.92,3.92,0,8.06-1.17,8.8-1.43v8.9c-1.27.53-4.82,1.48-9.86,1.48-9.86,0-15.63-5.99-15.63-14.04s6.04-14.04,13.94-14.04c8.53,0,12.67,5.83,12.67,12.45ZM524.56,110.4c-1.85,0-2.76,1.43-2.76,3.39h5.41c.11-1.96-.79-3.39-2.65-3.39Z"/></g><path class="dm" d="M61.58,118.94s3.13,4.44,8.89,2.6c0,0,5.86-1.37,5.55-7.93,0,0-3.82,2.33-6.88,3.42-3.24,1.16-7.57,1.9-7.57,1.9Z"/><path class="dm" d="M74.57,89.36l.3,1.25-1.01.79c-.22.17-5.48,4.25-11.49,6.56-6.2,2.39-13.4,2.88-13.71,2.9l-1.3.09-.6-1.15c-2.61-4.98-6.32-6.54-9.92-8.06-.87-.37-1.78-.75-2.65-1.17-5.45-2.66-9.66-7.42-12.16-13.78-1.89-4.81-2.76-10.59-2.32-15.45.85-9.43,6.13-17,15.7-22.51,2.02-1.16,4.6-2.14,7.07-2.7,7.29-1.62,17.84-1.78,26.66,6.7,2.51,2.41,5.18,5.39,7.79,12.74-1.38.15-2.69.46-3.92.91-2.27-6.21-4.44-8.65-6.64-10.76-7.55-7.26-16.68-7.1-23.02-5.68-2.06.46-4.29,1.3-5.94,2.26-8.49,4.89-12.98,11.23-13.72,19.4-.67,7.43,2.04,20.3,12.25,25.27.77.38,1.59.72,2.46,1.09,3.59,1.51,8,3.37,11.24,8.7,2.23-.24,7.1-.91,11.29-2.53,4.01-1.54,7.75-4.03,9.47-5.26-.16-.91-.42-2.29-.47-3.16,1.29.79,2.74,1.42,4.31,1.86.08.55.19,1.12.33,1.69Z"/><path class="dm" d="M75.72,95.82c-1.17,3.48-8.82,6.67-12.25,7.9-1.75.63-10.46,3.63-13.64,1.75-.49-.29-1.02-1.21-.31-2.3.95-1.44,4.8-.25,12.94-3.36h.01c8.18-2.99,10.31-6.42,11.98-5.95,1.25.35,1.45,1.4,1.27,1.95Z"/><path class="dm" d="M76.93,102.01c-.91,3.41-9.44,6.58-11.02,7.19h-.01c-1.61.57-10.14,3.72-13.04,1.73-.43-.29-.93-1.07-.29-2.03.86-1.27,4.61-.67,11.96-3.41h0s.01,0,.01,0h0c7.36-2.72,9.81-5.63,11.3-5.22,1.11.31,1.24,1.24,1.1,1.73Z"/><path class="dm" d="M78.26,107.99c-.74,3.34-8.53,6.24-9.97,6.8h-.01c-1.47.52-9.26,3.39-12,1.34-.4-.29-.89-1.08-.33-2.02.76-1.24,4.24-.53,10.95-3.03h0s.01,0,.01,0h0c6.72-2.49,8.9-5.29,10.29-4.85,1.04.34,1.18,1.26,1.07,1.75Z"/></svg>
+    </a>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Assessment Options Library</div>
+      <div class="header-sub">Center for Faculty Excellence &middot; American University</div>
+    </div>
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()"><span id="themeIcon">&#127769;</span><span id="themeLabel">Dark Mode</span></button>
+</header>
+
+<main>
+  <div class="tool-intro">
+    <h1>Assessment Ideas by AI Role</h1>
+    <p>Once you know what role you want AI to play in a step of your assignment, use this page to browse concrete assessment formats built for that role. Filter to one role, or browse all. Each entry includes a short description and a design note on how to make the role work in practice. For a version tailored to your own learning outcome, use the <a href="https://klmahajan.github.io/AU_Assessment_Tool/" target="_blank" style="color:var(--accent);">Assessment Design Tool</a>.</p>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All Options</button>
+    <button class="filter-btn" data-filter="forbidden">Forbidden Tool</button>
+    <button class="filter-btn" data-filter="transparent">Transparent Partner</button>
+    <button class="filter-btn" data-filter="collaborator">Required Collaborator</button>
+    <button class="filter-btn" data-filter="critique">Subject of Critique</button>
+  </div>
+  <div class="filter-count" id="filterCount"></div>
+
+  <!-- ══════════════ FORBIDDEN TOOL ══════════════ -->
+  <section class="role-section" data-section="forbidden">
+    <div class="role-section-head"><span class="role-section-num">Role 01</span><span class="role-section-name">Forbidden Tool</span></div>
+    <p class="role-section-desc">AI use is not permitted. The prohibition only works if the design makes it meaningful, live, oral, or observed formats are what make AI assistance actually impossible in the moment, not just against the rules.</p>
+    <div class="cards-grid">
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Oral Exam</div>
+        <div class="card-desc">A structured oral examination where students respond in real time to a small set of core questions and follow-ups.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Oral examination is the gold standard for Forbidden Tool assessments. Design 3&ndash;4 core questions and 1&ndash;2 probing follow-ups that shift based on the student's responses. Grade on reasoning quality and use of evidence, not polish or fluency.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Presentation with Live Q&amp;A</div>
+        <div class="card-desc">A short presentation followed by a required live Q&amp;A, so unscripted follow-up questions can surface genuine understanding.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Prepare 2&ndash;3 follow-up questions in advance that go well beyond any prepared script. Grade the Q&amp;A response as heavily as the presentation itself, that is where genuine understanding, or its absence, becomes visible.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Case Simulation</div>
+        <div class="card-desc">A realistic scenario requiring students to reason under structured conditions, ideally with no single right answer and a brief defense of their decisions.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>An in-class case simulation requires students to reason and respond in real time. A brief verbal debrief, asking each group to explain their key decision, adds accountability and depth.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">In-Class Exam</div>
+        <div class="card-desc">An in-class, closed-note written exam, ideally built around a scenario or case rather than pure recall.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Make the prompt scenario-based rather than recall-based: give students a situation they could not have anticipated, and ask them to reason through it using course frameworks.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Structured Discussion</div>
+        <div class="card-desc">A facilitated in-class discussion requiring students to engage in real time and build on each other's contributions.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Structure it to require students to reference specific evidence, take positions, and respond to challenge. Consider brief post-discussion written exit reflections as evidence of individual engagement.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Assessed Participation</div>
+        <div class="card-desc">Structured, assessed participation in class activities, defined by quality of contribution rather than frequency alone.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Make participation expectations discipline-specific: what does it mean to analyze, evaluate, or contribute as someone in your field? Make those expectations visible to students in advance.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Viva Voce (Flash Defense)</div>
+        <div class="card-desc">A brief live speaking examination, 5 to 10 minutes, in which students explain their argument or a specific choice aloud without referring to their paper.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>A two-minute "flash interview" at the instructor's desk, or a "concept justification" variant asking why a specific word or structural choice was made, both reveal instantly whether a student understands their own work.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Blind Syllabus Challenge</div>
+        <div class="card-desc">Students receive a syllabus with reading descriptions blanked out and must justify, in a timed in-class response with no computer access, which course concepts solve a given problem.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>This tests the exact skill AI is most tempted to outsource: identifying which framework is significant and why. Grade on precision and justification of the concept selection, not on whether students chose the "right" answer.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">In-Class Localized Writing</div>
+        <div class="card-desc">In-class writing under conditions that remove access to external AI tools, using hyper-local prompts tied to specific class material.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Reference specific class discussions, primary sources, or an obscure detail from course materials with no AI training-data footprint. Consider a "Sudden Pivot" prompt where a core constraint changes live during the session.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Proctored Concept Defense</div>
+        <div class="card-desc">A short live or recorded defense in which a student explains how their understanding of one named concept evolved across the semester, with the concept revealed only at the start.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>A student who let AI weave the concepts together will have no personal narrative of learning to tell. Grade on intellectual development, not product quality.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Raw Data Wrangling Exam</div>
+        <div class="card-desc">A proctored, internet-blocked session where students manually isolate variables and sketch a visualization from a raw, messy dataset, no automated tools or AI assistance available.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Confirms data competence before students are allowed to use any automated design tool. Grade on variable selection, visualization logic, and caption reasoning, not polish.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Structured / Staged</span></div>
+        <div class="card-title">Staged Writing Process</div>
+        <div class="card-desc">A large writing assignment broken into multiple mandatory, separately graded stages, so a polished final product cannot be reverse-engineered from nothing.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Include a handwritten brainstorm, a library-sourced annotated bibliography, a defended thesis and outline, and a final draft with a revision memo. Each stage must be completed before the next begins.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Closed-Note Quiz</div>
+        <div class="card-desc">A short, targeted quiz assessing specific knowledge, administered in class under closed-note, closed-device conditions.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Most effective as low-stakes retrieval practice given early and often rather than one high-stakes event. In-class administration removes the opportunity to look up or generate answers. Consider allowing one review-and-correct attempt to deepen encoding.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Lab / Practical Task</div>
+        <div class="card-desc">A timed, observed practical task using course tools or methods, graded on process and decision-making as much as the final result.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Build in a brief verbal debrief immediately after the task: "Walk me through your reasoning at this decision point." The debrief is often more revealing than the artifact itself.</div>
+      </div>
+
+      <div class="card" data-role="forbidden">
+        <div class="card-chips"><span class="chip role">Forbidden Tool</span><span class="chip forbidden-live">Async-Friendly</span></div>
+        <div class="card-title">Recorded Video Walkthrough</div>
+        <div class="card-desc">A short, 2 to 3 minute recorded video in which a student explains their own submitted written work aloud, required before the piece is graded.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>This catches the same thing a live oral defense catches, whether a student can talk through their own reasoning, without needing class time or an in-person room. A student who wrote the piece will explain it naturally; a student who did not will reveal the disconnect within the first thirty seconds. Particularly useful for online or asynchronous courses where a live defense is not practical.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ TRANSPARENT PARTNER ══════════════ -->
+  <section class="role-section" data-section="transparent">
+    <div class="role-section-head"><span class="role-section-num">Role 02</span><span class="role-section-name">Transparent Partner</span></div>
+    <p class="role-section-desc">AI is allowed, but students must document how they used it, cite it, and show their thinking process. The documentation itself becomes assessable, not just the final product.</p>
+    <div class="cards-grid">
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Essay with AI-Use Appendix</div>
+        <div class="card-desc">A focused analytical essay requiring students to construct an evidence-based argument using disciplinary frameworks.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require an AI Use Appendix: tool used, one or more example prompts, what the AI produced, and a paragraph on how the student's own judgment shaped what they kept, revised, or discarded.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Individual Project with AI Documentation</div>
+        <div class="card-desc">An individual project unfolding in stages, proposal, draft, peer feedback, final submission, so the student's thinking stays visible throughout.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Build an AI Documentation component into the project rubric. Students should be able to explain every AI-assisted decision in a brief debrief or written log, graded with real weight.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Reflection on AI Use</div>
+        <div class="card-desc">A structured reflection anchored to specific prompts, examining not just what was learned but how the student's thinking changed.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Where did the tool help? Where did it miss disciplinary context? What did the student have to already know in order to evaluate its output? This reflection often reveals expertise more than the work product itself.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Portfolio with Revision Evidence</div>
+        <div class="card-desc">A portfolio of several artifacts, drafts, feedback received, and revision evidence, framed by a reflection tracing growth across the semester.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Weight the framing reflection and evidence of growth heavily alongside the artifacts themselves, not just the polish of the final pieces.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Peer Review with Revision Memo</div>
+        <div class="card-desc">Students give and receive structured feedback on sufficiently developed work, closed by a memo showing what changed in response and why.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require specific, evidence-based feedback rather than general impressions, and require students to act on the feedback they receive, not just log it.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Version History Audit</div>
+        <div class="card-desc">Students submit work through a platform that preserves version history, so the instructor can confirm the document grew incrementally rather than appearing all at once.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>This does not eliminate AI use, it makes the documentation of a genuine writing process itself a graded deliverable. A Draftback-style playback of typing cadence works as a stronger variant.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Dataset Interrogation</div>
+        <div class="card-desc">Before an analysis or visualization is due, students submit a one-page memo naming their dataset's publisher, year, and scope, confirming they can independently retrieve it.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>A student whose numbers came entirely from an AI tool's internal claims, with no real dataset behind them, will not be able to produce this memo. Require it before any analysis proceeds.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Annotated Bibliography with AI-Use Statement</div>
+        <div class="card-desc">An annotated bibliography where each entry summarizes, evaluates, and explains the intended use of a source, making research process visible.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require an AI Use Statement documenting which tools were used, what prompts were entered, and how the student evaluated or modified any AI-suggested sources or summaries. The documentation itself is assessable.</div>
+      </div>
+
+      <div class="card" data-role="transparent">
+        <div class="card-chips"><span class="chip role">Transparent Partner</span></div>
+        <div class="card-title">Concept Integration Map</div>
+        <div class="card-desc">A sentence-by-sentence index showing exactly where and how each course concept changes the argument at that specific point in the paper.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>A concept dropped into the text without genuinely changing the reasoning will have no sentence to point to, because it never actually changed anything. Grade the map alongside the paper.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ REQUIRED COLLABORATOR ══════════════ -->
+  <section class="role-section" data-section="collaborator">
+    <div class="role-section-head"><span class="role-section-num">Role 03</span><span class="role-section-name">Required Collaborator</span></div>
+    <p class="role-section-desc">AI use is mandatory, built into the workflow. Students must use its output, evaluate it, and make explicit decisions about what to keep, revise, or discard, mirroring real professional practice.</p>
+    <div class="cards-grid">
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span></div>
+        <div class="card-title">Essay from AI First Draft</div>
+        <div class="card-desc">Students use AI to generate a first draft or outline, then revise it into their final essay.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require a documented revision process showing where and why the student departed from the AI output. Grade the revision and its rationale at least as heavily as the final essay.</div>
+      </div>
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">AI-Assisted Case Simulation</div>
+        <div class="card-desc">Students use AI to generate an initial case analysis or recommendation, then critique and revise it using course frameworks.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>The gap between the AI's output and the student's expert judgment becomes the central learning artifact. Add a "pitch" or defense component where the revision rationale is explained aloud.</div>
+      </div>
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span></div>
+        <div class="card-title">Individual Project, Defined AI Phase</div>
+        <div class="card-desc">An individual project with AI built into one defined workflow phase, ideation, prototype feedback, or literature synthesis.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Students submit both their AI interaction log and their rationale for what they kept, changed, and rejected, making disciplinary judgment visible and assessable.</div>
+      </div>
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span></div>
+        <div class="card-title">Group Project with Divided Roles</div>
+        <div class="card-desc">A collaborative project for a small group, with individual contribution logs and peer assessment to keep each member's thinking visible.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Design the deliverable so the whole is achievable only through genuine collaboration, not parallel individual work pasted together.</div>
+      </div>
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span></div>
+        <div class="card-title">AI First Draft Revision</div>
+        <div class="card-desc">The instructor distributes a generic AI draft on the assignment topic to the whole class; the assignment is to take it apart and rebuild it correctly.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Students submit both the marked-up original and their revised version, with a memo explaining every significant change. The AI draft's weaknesses become the curriculum.</div>
+      </div>
+
+      <div class="card" data-role="collaborator">
+        <div class="card-chips"><span class="chip role">Required Collaborator</span></div>
+        <div class="card-title">Prompt Engineering Log</div>
+        <div class="card-desc">When AI is part of the assignment workflow, students submit every prompt they used as a graded appendix, justified and tied to verification.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>This changes what is graded: not just the final product, but the quality of human judgment exercised at every step of the AI-assisted process.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ SUBJECT OF CRITIQUE ══════════════ -->
+  <section class="role-section" data-section="critique">
+    <div class="role-section-head"><span class="role-section-num">Role 04</span><span class="role-section-name">Subject of Critique</span></div>
+    <p class="role-section-desc">Students evaluate, challenge, or improve AI-generated output. The critique itself is the evidence of learning, developing the disciplinary judgment to catch what AI gets wrong.</p>
+    <div class="cards-grid">
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Hallucination Hunt</div>
+        <div class="card-desc">Students receive an AI-generated brief on their own course topic containing at least one fabricated statistic, misattributed study, or nonexistent citation, with no warning.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Grade on the quality of the verification process, which lookup strategies were used, what evidence confirmed or disproved each claim, and what the student learned about what makes false claims look credible.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Bait-and-Switch Source Check</div>
+        <div class="card-desc">Students receive a real article alongside a polished AI summary of it that has been altered to include a significant contextual error.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Grade on whether students identified the planted error and on the reasoning they used, not just the correct answer. Award extra credit for catching errors the instructor did not deliberately plant.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">AI Output Deconstruction</div>
+        <div class="card-desc">The instructor runs the actual assignment prompt through AI and distributes the result; students annotate where it hallucinated connections or applied a concept superficially.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Grade the annotation on the depth of disciplinary reasoning demonstrated, not on how many errors were found. This forces the cognitive work of editing and correcting a machine.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Citation Autopsy</div>
+        <div class="card-desc">Students use AI to generate a short literature review, then audit every citation for whether the source actually said what the AI claimed.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>The three-question audit per source, does it say what was claimed, was it used appropriately, did the AI capture the researcher's tone of certainty, is assessable and cannot be faked.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Essay Fact-Check</div>
+        <div class="card-desc">Students fact-check, annotate, or formally critique an AI-generated essay on the course topic.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Where does the AI get it right? Where does it fail, factually, interpretively, or disciplinarily? The critique itself demonstrates what the student actually knows.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Presentation, Response to AI Argument</div>
+        <div class="card-desc">Students present a "response" to an AI-generated argument or analysis: where they agree, where they correct, and what the AI's reasoning lacked.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>The presentation format forces students to make the critique legible to an audience, not just note it privately.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span><span class="chip forbidden-live">Live / In-Class</span></div>
+        <div class="card-title">Oral Exam, Critique Format</div>
+        <div class="card-desc">A live oral exam built around evaluating AI-generated content rather than recalling course material.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Provide the AI output at the start of the exam and grade the student's real-time evaluation, not a rehearsed take.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Annotated Bibliography, AI-Sourced</div>
+        <div class="card-desc">Students evaluate an AI-compiled bibliography, checking whether each source is real, relevant, and accurately characterized.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require students to independently verify and re-characterize each entry, not just format citations AI already found.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Reflection on AI's Blind Spots</div>
+        <div class="card-desc">Students prompt an AI tool with the course's learning outcome, then reflect on where its response was credible and where their own disciplinary knowledge produced something AI could not.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>This reflection makes a student's own expertise concrete and visible, in contrast to what the AI could generate.</div>
+      </div>
+
+      <div class="card" data-role="critique">
+        <div class="card-chips"><span class="chip role">Subject of Critique</span></div>
+        <div class="card-title">Peer Authenticity Review</div>
+        <div class="card-desc">Students evaluate a peer's (or a provided) piece of writing for signs it was AI-generated rather than authentically the student's own, and must point to specific evidence for their judgment.</div>
+        <div class="card-note"><div class="card-note-label">Design Note</div>Require concrete markers, not a gut feeling: generic phrasing, a voice inconsistent with the student's earlier work, or an absence of specific references to material only covered in class. This trains a skill several universities now favor over AI-detection software, which faculty at Vanderbilt, UT Austin, Northwestern, and Maryland have all been advised not to rely on.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ DESIGN ADD-ONS ══════════════ -->
+  <div class="addon-section">
+    <h2>Design Add-Ons</h2>
+    <p class="addon-intro">These are not standalone assessment types, they are rubric additions and grading-policy tweaks that strengthen any option above. Add one or more to close the most common AI-use loopholes in your design.</p>
+    <div class="addon-grid" id="addonsGrid">
+
+      <div class="addon-card" data-role="all">
+        <div class="addon-tag">Universal</div>
+        <div class="addon-title">Two-Stage Submission</div>
+        <div class="addon-desc">Require a rough draft for low-stakes feedback before the final version is due. Grade the revision process, not just the final product.</div>
+      </div>
+
+      <div class="addon-card" data-role="all">
+        <div class="addon-tag">Universal</div>
+        <div class="addon-title">The "So What?" Requirement</div>
+        <div class="addon-desc">Require every claim to be followed by an explicit statement of its significance to the learning outcome. Reduces AI content that is correct but analytically hollow.</div>
+      </div>
+
+      <div class="addon-card" data-role="all">
+        <div class="addon-tag">Universal</div>
+        <div class="addon-title">Metacognitive Reflection Add-On</div>
+        <div class="addon-desc">Attach a short paragraph on the student's own decision-making process, graded independently. A student who outsourced the thinking cannot write this with any specificity.</div>
+      </div>
+
+      <div class="addon-card" data-role="all">
+        <div class="addon-tag">Universal</div>
+        <div class="addon-title">Randomized Prompt Variation</div>
+        <div class="addon-desc">Each student receives a slightly different version of the prompt, a different case, dataset, or constraint. Shared AI outputs become immediately detectable.</div>
+      </div>
+
+      <div class="addon-card" data-role="forbidden">
+        <div class="addon-tag">Forbidden Tool</div>
+        <div class="addon-title">In-Class Baseline Writing</div>
+        <div class="addon-desc">Early in the semester, collect a short unassisted in-class writing sample as a reference point for later comparison against take-home work.</div>
+      </div>
+
+      <div class="addon-card" data-role="forbidden">
+        <div class="addon-tag">Forbidden Tool</div>
+        <div class="addon-title">Restructuring the Grading Matrix</div>
+        <div class="addon-desc">Shift 70 percent or more of the grade to visible, unlaunderable steps, handwritten outlines, in-class drafting. The polished final product is worth the least.</div>
+      </div>
+
+      <div class="addon-card" data-role="transparent">
+        <div class="addon-tag">Transparent Partner</div>
+        <div class="addon-title">The Prompt Log</div>
+        <div class="addon-desc">Require every prompt given to AI as an appendix, with a sentence justifying each one. Graded on the quality of the justification, not the AI's output.</div>
+      </div>
+
+      <div class="addon-card" data-role="transparent">
+        <div class="addon-tag">Transparent Partner</div>
+        <div class="addon-title">The "What I Changed" Annotation</div>
+        <div class="addon-desc">Students mark up the AI output they received, highlighting every edit made and why. A student with no meaningful changes has not exercised real judgment.</div>
+      </div>
+
+      <div class="addon-card" data-role="transparent">
+        <div class="addon-tag">Transparent Partner</div>
+        <div class="addon-title">The Audit Trail</div>
+        <div class="addon-desc">Grade a portion of the assignment on the process itself: AI output received, handwritten corrections, and cross-references to sources used to verify or replace AI claims.</div>
+      </div>
+
+      <div class="addon-card" data-role="collaborator">
+        <div class="addon-tag">Required Collaborator</div>
+        <div class="addon-title">AI Limitations Statement</div>
+        <div class="addon-desc">Students must identify at least two specific places where the AI output was inadequate for the task, and explain how they compensated.</div>
+      </div>
+
+      <div class="addon-card" data-role="critique">
+        <div class="addon-tag">Subject of Critique</div>
+        <div class="addon-title">Counter-Prompt Challenge</div>
+        <div class="addon-desc">After finding AI's errors, students write a better prompt that would have avoided them, and explain why. Teaches AI literacy as a discipline-specific skill.</div>
+      </div>
+
+      <div class="addon-card" data-role="critique transparent">
+        <div class="addon-tag">Subject of Critique / Transparent Partner</div>
+        <div class="addon-title">Closing the Citation Format Loophole</div>
+        <div class="addon-desc">Separate citation formatting from citation verification. A correctly formatted citation earns zero credit until the student confirms the source exists and says what it is claimed to say.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="next-steps">
+    <h3>Want Ideas Tailored to Your Own Learning Outcome?</h3>
+    <p>This page is a general reference to browse during the workshop. For assessment ideas built around your own specific learning outcome, course level, and modality, use the Assessment Design Tool.</p>
+    <a class="btn" href="https://klmahajan.github.io/AU_Assessment_Tool/" target="_blank">Open the Assessment Design Tool &rarr;</a>
+  </div>
+</main>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeIcon').textContent = isDark ? '\u{1F319}' : '\u{2600}\u{FE0F}';
+  document.getElementById('themeLabel').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+}
+
+const filterBtns = document.querySelectorAll('.filter-btn');
+const sections = document.querySelectorAll('.role-section');
+const addonCards = document.querySelectorAll('.addon-card');
+const filterCount = document.getElementById('filterCount');
+
+function applyFilter(filter) {
+  let visibleCount = 0;
+  sections.forEach(sec => {
+    const match = filter === 'all' || sec.dataset.section === filter;
+    sec.style.display = match ? '' : 'none';
+    if (match) {
+      visibleCount += sec.querySelectorAll('.card').length;
+    }
+  });
+  addonCards.forEach(card => {
+    const roles = card.dataset.role.split(' ');
+    const match = filter === 'all' || roles.includes('all') || roles.includes(filter);
+    card.style.display = match ? '' : 'none';
+  });
+  filterCount.textContent = filter === 'all'
+    ? `Showing all ${visibleCount} assessment options`
+    : `Showing ${visibleCount} option${visibleCount === 1 ? '' : 's'} for this role`;
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter(btn.dataset.filter);
+  });
+});
+
+applyFilter('all');
+</script>
+
+</body>
+</html>
